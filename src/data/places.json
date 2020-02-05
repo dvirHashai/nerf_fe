@@ -9,3 +9,22 @@
     ]
 }
 
+
+{
+    "players": [
+        {
+            "Item": {
+                "name": "Shahar engel",
+                "tokenId": "189618208",
+                "playerId": "09fae5bd-2911-448a-8340-d687f20ed35f"
+            }
+        },
+        {
+            "Item": {
+                "name": "Dvir hashai",
+                "tokenId": "730903974",
+                "playerId": "bef7994b-b6cc-4292-86ba-d8121529727c"
+            }
+        }
+    ]
+}

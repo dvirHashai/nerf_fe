@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { GenerateGame, GetGame, StartGame } from './api/nerfwarzApi';
+import { GenerateGame, StartGame } from './api/nerfwarzApi';
 import Countdown from './components/Countdown';
 import GameBoard from './components/GameBoard';
 
@@ -25,48 +25,20 @@ function App() {
   });
   const [gameStarted, setGameStarted] = useState(false);
 
-  useEffect(() => {
-    console.log("rendering..");
-  }, []);
-
   const generateGame = async () => {
     const gameResponse = await GenerateGame();
 
-    if (gameResponse && gameResponse.gameId) {
-      console.log("setting game", gameResponse.gameId);
+    if (!!gameResponse && !!gameResponse.gameId) {
+      // console.log("setting game", gameResponse.gameId);
       await setGame({
         gameId: gameResponse.gameId
       });
-      console.log("game updated", game);
+      // console.log("game updated", game);
       setGameStarted(true);
-      startGetGame();
     }
   };
 
-  const startGetGame = () => setTimeout(async () => {
-    console.log("getting game");
-    const currentGame = await GetGame(game.gameId);
-    let teams = {
-      defenderGroup: {},
-      attackerGroup: {}
-    };
-
-    if (currentGame && currentGame.players) {
-      for (let i = 0; i < currentGame.players.length; i++) {
-        if (i % 2 === 0) {
-          teams.defenderGroup.players.push(currentGame.players[i]);
-        }
-        else {
-          teams.attackerGroup.players.push(currentGame.players[i]);
-        }
-      };
-      console.log("defense", JSON.stringify(teams.defenderGroup));
-      console.log("attack", JSON.stringify(teams.attackerGroup));
-      setGame({
-        teams: teams
-      });
-    }
-  }, 3000);
+  
 
   function startGame() {
     StartGame();
@@ -83,7 +55,7 @@ function App() {
           gameStarted={gameStarted} />
       </div>
       <div className="gameInfo">
-        <GameBoard game={game} />
+        <GameBoard game={game} setGame={setGame} />
       </div>
       <div className="startGame">
         <button onClick={startGame} style={styles.button}>Start</button>

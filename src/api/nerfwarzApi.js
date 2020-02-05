@@ -8,7 +8,8 @@ export const GenerateGame = async () => {
 };
 
 export const GetGame = async (gameId) => {
-    const response = await axios.get(PROXY_URL + `https://4p192ywr8f.execute-api.eu-central-1.amazonaws.com/dev/game/?gameId=${gameId}`);
+    gameId = "e0193a65-2625-4c44-b8db-01340ee79478"; //TODO - drop this line
+    const response = await axios.get(PROXY_URL + `https://m9iboowws1.execute-api.eu-central-1.amazonaws.com/dev/game/?gameId=${gameId}`);
     console.log("GetGame response", response.data);
     console.log("gameId", gameId);
 
