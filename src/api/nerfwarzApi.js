@@ -8,12 +8,12 @@ export const GenerateGame = async () => {
 };
 
 export const GetGame = async (gameId) => {
-    gameId = "e0193a65-2625-4c44-b8db-01340ee79478"; //TODO - drop this line
+    gameId = "60eef921-35ca-4f96-8db0-db0870fd054b"; //TODO - drop this line
     const response = await axios.get(PROXY_URL + `https://m9iboowws1.execute-api.eu-central-1.amazonaws.com/dev/game/?gameId=${gameId}`);
     console.log("GetGame response", response.data);
     console.log("gameId", gameId);
 
-    let result = response.data.length > 1 ?
+    let result = response.data.length >= 1 ?
         response.data.find(g => g.gameId === gameId) :
         response.data;
     console.log("GetGame result", result);

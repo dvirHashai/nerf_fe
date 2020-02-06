@@ -3,6 +3,7 @@ import './App.css';
 import { GenerateGame, StartGame } from './api/nerfwarzApi';
 import Countdown from './components/Countdown';
 import GameBoard from './components/GameBoard';
+import BackgroundImg from './assets/Nerf_logo.jpg'
 
 function App() {
   const [game, setGame] = useState({
@@ -68,7 +69,12 @@ const styles = {
   app: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    backgroundImage: `url(${BackgroundImg})`,
+    backgroundRepeat  : 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+
   },
   button: {
     width: "18em",

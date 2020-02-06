@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { GetGame } from '../api/nerfwarzApi';
+import React, {useState, useEffect} from 'react';
+import {GetGame} from '../api/nerfwarzApi';
 
 export default function GameBoard(props) {
     const [table, setTable] = useState("");
@@ -14,6 +14,8 @@ export default function GameBoard(props) {
                 <th>Defense</th>
                 <th>Attack</th>
             </tr>);
+        console.log("defensePlayers: ", defensePlayers);
+        console.log("attackPlayers: ", attackPlayers);
         if (!!defensePlayers) {
             console.log("inserting players");
             for (let i = 0; i < defensePlayers.length; i++) {
