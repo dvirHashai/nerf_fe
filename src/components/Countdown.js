@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 export default function Countdown(props) {
     const [countdown, setCountdown] = useState("");
 
     const startTimer = () => setInterval(function () {
-        var now = new Date().getTime();
-
-        var distance = props.date - now;
+        const now = new Date().getTime();
+        const distance = props.gameCountdown - now;
 
         // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -20,12 +19,11 @@ export default function Countdown(props) {
         }
     }, 1000);
 
-    if (props.gameStarted) startTimer();
+    if (props.gameCountdown > 0) startTimer();
 
     return (
-        props.gameStarted ?
-            <div>
-                {countdown}
-            </div> : ""
+        <div>
+            {countdown}
+        </div>
     )
 }

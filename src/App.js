@@ -1,45 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { GenerateGame, StartGame } from './api/nerfwarzApi';
 import Countdown from './components/Countdown';
 import GameBoard from './components/GameBoard';
 import BackgroundImg from './assets/Nerf_logo.jpg'
 
-function App() {
-  const [game, setGame] = useState({
-    gameId: "",
-    gameStartTime: "",
-    teams: {
-      defenderGroup: {
-        players: []
-      },
-      attackerGroup: {
-        players: []
-      }
-    },
-    place: "",
-    judge: {
-      playerId: "",
-      tokenId: "",
-      name: ""
-    }
-  });
-  const [gameStarted, setGameStarted] = useState(false);
+export default function App() {
+  const [game, setGame] = useState({});
+  const [gameStartDate, setGameStartDate] = useState("");
 
   const generateGame = async () => {
     const gameResponse = await GenerateGame();
 
     if (!!gameResponse && !!gameResponse.gameId) {
-      // console.log("setting game", gameResponse.gameId);
-      await setGame({
+      console.log("setting game", gameResponse.gameId);
+      setGame({
         gameId: gameResponse.gameId
       });
-      // console.log("game updated", game);
-      setGameStarted(true);
+      setGameStartDate(new Date().setMinutes(new Date().getMinutes() + 1));
     }
   };
-
-  
 
   function startGame() {
     StartGame();
@@ -47,13 +27,13 @@ function App() {
 
   return (
     <div className="App" style={styles.app}>
+      {console.log("rendering App..")}
       <div className="initGame">
         <button onClick={generateGame} style={styles.button}>Generate</button>
       </div>
       <div className="gameCountdown">
         <Countdown
-          date={new Date().setMinutes(new Date().getMinutes() + 1)}
-          gameStarted={gameStarted} />
+          gameCountdown={gameStartDate} />
       </div>
       <div className="gameInfo">
         <GameBoard game={game} setGame={setGame} />
@@ -71,7 +51,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "space-around",
     backgroundImage: `url(${BackgroundImg})`,
-    backgroundRepeat  : 'no-repeat',
+    backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
 
@@ -81,5 +61,3 @@ const styles = {
     height: "8em"
   }
 }
-
-export default App;

@@ -1,65 +1,67 @@
-import React, {useState, useEffect} from 'react';
-import {GetGame} from '../api/nerfwarzApi';
+import React, { useEffect, useState } from 'react';
+import { GetGame } from '../api/nerfwarzApi';
 
 export default function GameBoard(props) {
-    const [table, setTable] = useState("");
+    const [thisGame, setThisGame] = useState(props.game);
+    const [attackTeam, setAttackTeam] = useState([]);
+    const [defenseTeam, setDefenseTeam] = useState([]);
 
     useEffect(() => {
-        startGetGame();
-        const defensePlayers = props.game.teams ? props.game.teams.defenderGroup.players : [];
-        const attackPlayers = props.game.teams ? props.game.teams.attackerGroup.players : [];
-        let table = [];
-        table.push(
-            <tr>
-                <th>Defense</th>
-                <th>Attack</th>
-            </tr>);
-        console.log("defensePlayers: ", defensePlayers);
-        console.log("attackPlayers: ", attackPlayers);
-        if (!!defensePlayers) {
-            console.log("inserting players");
-            for (let i = 0; i < defensePlayers.length; i++) {
-                table.push(
-                    <tr>
-                        <td>{defensePlayers[i]}</td>
-                        <td>{attackPlayers[i]}</td>
-                    </tr>)
+        console.log("thisGame", props.game);
+        if (!!props.game && !!props.game.gameId) {
+            let gameResponse;
+            setInterval(async () => {
+                console.log("getting game");
+                gameResponse = await GetGame(props.game.gameId);
+                setThisGame(gameResponse);
+            }, 5000);
+
+            props.setGame(gameResponse);
+        }
+    }, [props]);
+
+    useEffect(() => {
+        console.log("GameBoard start", thisGame);
+        if (!!thisGame && !!thisGame.gameId && !!thisGame.players) {
+            const players = thisGame.players;
+            let attack = [];
+            let defense = [];
+            console.log("players from server", players);
+            if (!!players) {
+                console.log("inserting players");
+                defense.push(players[0])
+                for (let i = 1; i < players.length; i++) {
+                    if (defense.length > attack.length) {
+                        attack.push(players[i]);
+                    }
+                    else {
+                        defense.push(players[i]);
+                    }
+                }
+                setAttackTeam(attack);
+                setDefenseTeam(defense);
             }
         }
-        setTable(table);
-        console.log("table", table);
-    }, []);
-
-    const startGetGame = () => setTimeout(async () => {
-        console.log("getting game");
-        const currentGame = await GetGame(props.game.gameId);
-        let teams = {
-            defenderGroup: {},
-            attackerGroup: {}
-        };
-
-        if (currentGame && currentGame.players) {
-            teams.defenderGroup.players = [];
-            teams.attackerGroup.players = [];
-            for (let i = 0; i < currentGame.players.length; i++) {
-                if (i % 2 === 0) {
-                    teams.defenderGroup.players.push(currentGame.players[i]);
-                }
-                else {
-                    teams.attackerGroup.players.push(currentGame.players[i]);
-                }
-            };
-            console.log("defense", JSON.stringify(teams.defenderGroup));
-            console.log("attack", JSON.stringify(teams.attackerGroup));
-            props.setGame({
-                teams: teams
-            });
-        }
-    }, 3000);
+    }, [thisGame]);
 
     return (
-        <div>
-            <table>{table}</table>
+        <div style={styles.gameBoard}>
+            <div className="attackTeam">
+                <h1>Attack</h1>
+                {attackTeam.map(player => <div key={player.Item.playerId}>{player.Item.name}</div>)}
+            </div>
+            <div className="defenseTeam">
+                <h1>Defense</h1>
+                {defenseTeam.map(player => <div key={player.Item.playerId}>{player.Item.name}</div>)}
+            </div>
         </div>
     );
+};
+
+const styles = {
+    gameBoard: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around"
+    }
 }
