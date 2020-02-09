@@ -60,8 +60,15 @@ export default function GameBoard(props) {
 
 const styles = {
     gameBoard: {
+        // backgroundImage: `url(${buttonImg})`,
+        backgroundColor: "#222222",
+        height: "50vh",
+        width: "85vw",
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-around"
+        justifyContent: "space-around",
+        borderRadius: "1em",
+        border: "2px solid #22b0c6",
+        boxShadow: "rgb(66, 133, 244) 0px 0px 10px inset"
     }
 }

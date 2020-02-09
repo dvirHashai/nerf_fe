@@ -3,7 +3,9 @@ import './App.css';
 import { GenerateGame, StartGame } from './api/nerfwarzApi';
 import Countdown from './components/Countdown';
 import GameBoard from './components/GameBoard';
-import BackgroundImg from './assets/Nerf_logo.jpg'
+import nerfWarsLogo from './assets/nerf-wars.png';
+import backgroundImg from './assets/carbonWallpaper3.jpg';
+import buttonImg from './assets/carbon.png';
 
 export default function App() {
   const [game, setGame] = useState({});
@@ -28,36 +30,62 @@ export default function App() {
   return (
     <div className="App" style={styles.app}>
       {console.log("rendering App..")}
-      <div className="initGame">
-        <button onClick={generateGame} style={styles.button}>Generate</button>
+      <div className="logo" style={styles.logo}>
       </div>
-      <div className="gameCountdown">
-        <Countdown
-          gameCountdown={gameStartDate} />
+      <div className="game" style={styles.game}>
+        <div className="initGame">
+          <button onClick={generateGame} style={styles.button}>Generate</button>
+        </div>
+        <div className="gameCountdown">
+          <Countdown
+            gameCountdown={gameStartDate} />
+        </div>
+        <div className="gameInfo">
+          <GameBoard game={game} setGame={setGame} />
+        </div>
+        <div className="startGame">
+          <button onClick={startGame} style={styles.button}>Start</button>
+        </div>
       </div>
-      <div className="gameInfo">
-        <GameBoard game={game} setGame={setGame} />
-      </div>
-      <div className="startGame">
-        <button onClick={startGame} style={styles.button}>Start</button>
-      </div>
+      <footer>
+
+      </footer>
     </div>
   );
 }
 
 const styles = {
   app: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    backgroundImage: `url(${BackgroundImg})`,
+    backgroundImage: `url(${backgroundImg})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    backgroundSize: 'cover',
-
+    backgroundSize: 'cover'
+  },
+  logo: {
+    backgroundImage: `url(${nerfWarsLogo})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    height: "20vh",
+    width: "auto"
+  },
+  game: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: "80vh",
+    width: "auto"
   },
   button: {
-    width: "18em",
-    height: "8em"
+    backgroundImage: `url(${buttonImg})`,
+    borderRadius: "0.6em",
+    border: "2px solid orange",
+    fontFamily: "monospace",
+    color: "white",
+    fontSize: "1em",
+    minWidth: "6em",
+    padding: "1em",
+    cursor: "pointer",
+    outline: "none"
   }
 }

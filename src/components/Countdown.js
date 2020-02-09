@@ -12,7 +12,7 @@ export default function Countdown(props) {
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        setCountdown(`${minutes}:${seconds}`);
+        setCountdown(`Game starts in ${minutes}:${seconds}`);
 
         if (distance < 0) {
             setCountdown("WARRR !!");
