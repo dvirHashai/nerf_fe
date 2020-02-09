@@ -12,14 +12,15 @@ export default function App() {
   const [gameStartDate, setGameStartDate] = useState("");
 
   const generateGame = async () => {
-    const gameResponse = await GenerateGame();
-
-    if (!!gameResponse && !!gameResponse.gameId) {
-      console.log("setting game", gameResponse.gameId);
-      setGame({
-        gameId: gameResponse.gameId
-      });
-      setGameStartDate(new Date().setMinutes(new Date().getMinutes() + 1));
+    if (!!!gameStartDate) {
+      const gameResponse = await GenerateGame();
+      if (!!gameResponse && !!gameResponse.gameId) {
+        console.log("setting game", gameResponse.gameId);
+        setGame({
+          gameId: gameResponse.gameId
+        });
+        setGameStartDate(new Date().setMinutes(new Date().getMinutes() + 1));
+      }
     }
   };
 
@@ -83,7 +84,7 @@ const styles = {
     fontFamily: "monospace",
     color: "white",
     fontSize: "1em",
-    minWidth: "6em",
+    width: "85vw",
     padding: "1em",
     cursor: "pointer",
     outline: "none"
