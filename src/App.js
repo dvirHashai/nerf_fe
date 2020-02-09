@@ -14,6 +14,7 @@ export default function App() {
   const generateGame = async () => {
     if (!!!gameStartDate) {
       const gameResponse = await GenerateGame();
+      //TODO - set place
       if (!!gameResponse && !!gameResponse.gameId) {
         console.log("setting game", gameResponse.gameId);
         setGame({
@@ -23,9 +24,11 @@ export default function App() {
       }
     }
   };
-
+//TODO - start when at least 5 defense players registered 
   function startGame() {
-    StartGame();
+    if (Date.now() > gameStartDate) {
+      StartGame();
+    }
   };
 
   return (
