@@ -17,17 +17,18 @@ export default function App() {
       //TODO - set place
       if (!!gameResponse && !!gameResponse.gameId) {
         console.log("setting game", gameResponse.gameId);
+        setGameStartDate(new Date().setSeconds(new Date().getSeconds() + 20));
         setGame({
           gameId: gameResponse.gameId
         });
-        setGameStartDate(new Date().setMinutes(new Date().getMinutes() + 1));
       }
     }
   };
 //TODO - start when at least 5 defense players registered 
-  function startGame() {
+  const startGame = async () => {
+    console.log("startGame game", game);
     if (Date.now() > gameStartDate) {
-      StartGame();
+      await StartGame(game.gameId);
     }
   };
 
@@ -38,14 +39,14 @@ export default function App() {
       </div>
       <div className="game" style={styles.game}>
         <div className="initGame">
-          <button onClick={generateGame} style={styles.button}>Generate</button>
+          <button onClick={generateGame} style={styles.button}>Generate new game</button>
         </div>
         <div className="gameCountdown">
           <Countdown
-            gameCountdown={gameStartDate} />
+            gameStartDate={gameStartDate} />
         </div>
         <div className="gameInfo">
-          <GameBoard game={game} setGame={setGame} />
+          <GameBoard game={game} setGame={setGame} gameStartDate={gameStartDate} />
         </div>
         <div className="startGame">
           <button onClick={startGame} style={styles.button}>Start</button>
@@ -84,9 +85,8 @@ const styles = {
     backgroundImage: `url(${buttonImg})`,
     borderRadius: "0.6em",
     border: "2px solid orange",
-    fontFamily: "monospace",
+    fontFamily: "ArcadeClassic",
     color: "white",
-    fontSize: "1em",
     width: "85vw",
     padding: "1em",
     cursor: "pointer",

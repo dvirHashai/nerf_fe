@@ -7,28 +7,24 @@ export default function GameBoard(props) {
     const [defenseTeam, setDefenseTeam] = useState([]);
 
     useEffect(() => {
-        console.log("thisGame", props.game);
-        if (!!props.game && !!props.game.gameId) {
+        if (!!props.game && !!props.game.gameId && props.gameStartDate > Date.now()) {
             let gameResponse;
-            setInterval(async () => {
+            setTimeout(async () => {
                 console.log("getting game");
                 gameResponse = await GetGame(props.game.gameId);
                 setThisGame(gameResponse);
+                props.setGame(gameResponse);
             }, 5000);
-
-            props.setGame(gameResponse);
         }
     }, [props]);
 
     useEffect(() => {
-        console.log("GameBoard start", thisGame);
         if (!!thisGame && !!thisGame.gameId && !!thisGame.players) {
             const players = thisGame.players;
             let attack = [];
             let defense = [];
             console.log("players from server", players);
             if (!!players) {
-                console.log("inserting players");
                 defense.push(players[0])
                 for (let i = 1; i < players.length; i++) {
                     if (defense.length > attack.length) {
@@ -46,13 +42,18 @@ export default function GameBoard(props) {
 
     return (
         <div style={styles.gameBoard}>
-            <div className="attackTeam">
-                <h1>Attack</h1>
-                {attackTeam.map(player => <div key={player.Item.playerId}>{player.Item.name}</div>)}
+            <div style={styles.teams}>
+                <div className="attackTeam">
+                    <h3>Attack</h3>
+                    {attackTeam.map(player => <div key={player.Item.playerId}>{player.Item.name}</div>)}
+                </div>
+                <div className="defenseTeam">
+                    <h3>Defense</h3>
+                    {defenseTeam.map(player => <div key={player.Item.playerId}>{player.Item.name}</div>)}
+                </div>
             </div>
-            <div className="defenseTeam">
-                <h1>Defense</h1>
-                {defenseTeam.map(player => <div key={player.Item.playerId}>{player.Item.name}</div>)}
+            <div>
+                {!!props.game && !!props.game.referee ? `Referee: ${props.game.referee}` : ""}
             </div>
         </div>
     );
@@ -65,10 +66,15 @@ const styles = {
         height: "50vh",
         width: "85vw",
         display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-around",
+        flexDirection: "column",
+        justifyContent: 'space-between',
         borderRadius: "1em",
         border: "2px solid #22b0c6",
         boxShadow: "rgb(66, 133, 244) 0px 0px 10px inset"
+    },
+    teams: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
     }
 }

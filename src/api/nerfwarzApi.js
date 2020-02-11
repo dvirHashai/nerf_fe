@@ -37,7 +37,7 @@ export const GetGame = async (gameId) => {
 export const StartGame = async (gameId) => {
     let result;
     try {
-        const response = await axios.get(PROXY_URL + ` https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame/${gameId}`);
+        const response = await axios.get(PROXY_URL + `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame/${gameId}`);
         console.log("StartGame result", response.data);
     } catch (error) {
         console.log("StartGame failed", error);
