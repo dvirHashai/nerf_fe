@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { WarMinPlayers } from '../data/consts';
 
 export default function Countdown(props) {
     const [countdown, setCountdown] = useState("");
+    const [playersCount, setPlayersCount] = useState("");
+
+    useEffect(() => {
+        if (props.gameStartDate > 0 && props.gameStartDate > Date.now()) {
+            setInterval(calculateCounter, 100);
+        }
+        if (!!props.game && !!props.game.players) {
+            console.log("Countdown players", props.game.players);
+            setPlayersCount(props.game.players.length);
+        }
+    }, [props]);
 
     function calculateCounter() {
         const now = new Date().getTime();
@@ -11,24 +23,37 @@ export default function Countdown(props) {
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         const parsedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
 
-        setCountdown(`Game starts in ${minutes}:${parsedSeconds}`);
-
-        if (distance < 0) {
-            setCountdown("WARRR !!");
+        let message = "";
+        if (distance <= 0 && playersCount >= WarMinPlayers) {
+            message = "LET THE WAR BEGIN !!";
         }
+        else if (distance <= 0 && playersCount < WarMinPlayers) {
+            message = "You have to recruit more, we won't go to war looking like that !";
+        }
+        else if (distance > 0) {
+            message = `Going to war in ${minutes}:${parsedSeconds}`;
+        }
+        else {
+            message = `Whats going on???`;
+        }
+
+        setCountdown(message);
     }
-    const startTimer = () => {
-        if (props.gameStartDate > Date.now()) {
-            console.log("calculating.............♪♪♪♪♪♪♪♪♪♪♪♪♪♪")
-            setInterval(calculateCounter, 100);
-        }
-    };
 
-    if (props.gameStartDate > 0) startTimer();
-
+    let message = (playersCount > 0 && WarMinPlayers - playersCount) > 0 ?
+        <>
+            <br />
+            <div>{`${WarMinPlayers - playersCount} more players to go`}</div>
+        </>
+        : "";
     return (
-        <div>
-            {countdown}
-        </div>
+        <>
+            <div>
+                {countdown}
+            </div>
+            <div>
+                {message}
+            </div>
+        </>
     )
 }

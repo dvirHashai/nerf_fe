@@ -5,6 +5,7 @@ export default function GameBoard(props) {
     const [thisGame, setThisGame] = useState(props.game);
     const [attackTeam, setAttackTeam] = useState([]);
     const [defenseTeam, setDefenseTeam] = useState([]);
+    const [referee, setReferee] = useState({});
 
     useEffect(() => {
         if (!!props.game && !!props.game.gameId && props.gameStartDate > Date.now()) {
@@ -12,6 +13,7 @@ export default function GameBoard(props) {
             setTimeout(async () => {
                 console.log("getting game");
                 gameResponse = await GetGame(props.game.gameId);
+                gameResponse.place = props.game.place;
                 setThisGame(gameResponse);
                 props.setGame(gameResponse);
             }, 5000);
@@ -34,11 +36,21 @@ export default function GameBoard(props) {
                         defense.push(players[i]);
                     }
                 }
-                setAttackTeam(attack);
+                if (players.length > 4) {
+                    setReferee(defense.pop());
+                }
                 setDefenseTeam(defense);
+                setAttackTeam(attack);
             }
         }
     }, [thisGame]);
+
+    const refereeTxt = !!referee && !!referee.Item ? `Referee: ${referee.Item.name}` : "";
+    const placeTxt = !!thisGame.place ?
+        <>
+            <h3>War zone</h3>
+            <div>{thisGame.place}</div>
+        </> : "";
 
     return (
         <div style={styles.gameBoard}>
@@ -53,7 +65,12 @@ export default function GameBoard(props) {
                 </div>
             </div>
             <div>
-                {!!props.game && !!props.game.referee ? `Referee: ${props.game.referee}` : ""}
+                <div>
+                    {placeTxt}
+                </div>
+                <div>
+                    {refereeTxt}
+                </div>
             </div>
         </div>
     );
@@ -70,7 +87,8 @@ const styles = {
         justifyContent: 'space-between',
         borderRadius: "1em",
         border: "2px solid #22b0c6",
-        boxShadow: "rgb(66, 133, 244) 0px 0px 10px inset"
+        boxShadow: "rgb(66, 133, 244) 0px 0px 10px inset",
+        padding: "1em"
     },
     teams: {
         display: "flex",

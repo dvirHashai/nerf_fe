@@ -6,6 +6,7 @@ import GameBoard from './components/GameBoard';
 import nerfWarsLogo from './assets/nerf-wars.png';
 import backgroundImg from './assets/carbonWallpaper3.jpg';
 import buttonImg from './assets/carbon.png';
+import places from './data/places.json';
 
 export default function App() {
   const [game, setGame] = useState({});
@@ -14,12 +15,13 @@ export default function App() {
   const generateGame = async () => {
     if (!!!gameStartDate) {
       const gameResponse = await GenerateGame();
-      //TODO - set place
+      
       if (!!gameResponse && !!gameResponse.gameId) {
-        console.log("setting game", gameResponse.gameId);
-        setGameStartDate(new Date().setSeconds(new Date().getSeconds() + 20));
+        const place = places.places[Math.floor(Math.random() * (places.places.length))].name;
+        setGameStartDate(new Date().setSeconds(new Date().getSeconds() + 10));
         setGame({
-          gameId: gameResponse.gameId
+          gameId: gameResponse.gameId,
+          place: place
         });
       }
     }
@@ -43,10 +45,14 @@ export default function App() {
         </div>
         <div className="gameCountdown">
           <Countdown
-            gameStartDate={gameStartDate} />
+            gameStartDate={gameStartDate}
+            game={game} />
         </div>
         <div className="gameInfo">
-          <GameBoard game={game} setGame={setGame} gameStartDate={gameStartDate} />
+          <GameBoard 
+            game={game} 
+            setGame={setGame} 
+            gameStartDate={gameStartDate} />
         </div>
         <div className="startGame">
           <button onClick={startGame} style={styles.button}>Start</button>
