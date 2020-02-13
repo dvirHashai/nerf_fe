@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { GenerateGame, StartGame } from './api/nerfwarzApi';
+import { GenerateGame, PublishGame } from './api/nerfwarzApi';
 import Countdown from './components/Countdown';
 import GameBoard from './components/GameBoard';
 import nerfWarsLogo from './assets/nerf-wars.png';
@@ -30,7 +30,8 @@ export default function App() {
   const startGame = async () => {
     console.log("startGame game", game);
     if (Date.now() > gameStartDate) {
-      await StartGame(game.gameId);
+    console.log("♪♪♪♪♪♪♪♪♪♪♪♪♪♪♪♫♪♪♪♪♪♪publihsing game", game);
+    await PublishGame(game);
     }
   };
 

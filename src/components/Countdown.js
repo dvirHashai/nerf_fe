@@ -4,16 +4,27 @@ import { WarMinPlayers } from '../data/consts';
 export default function Countdown(props) {
     const [countdown, setCountdown] = useState("");
     const [playersCount, setPlayersCount] = useState("");
+    const [timerId, setTimerId] = useState("");
 
     useEffect(() => {
-        if (props.gameStartDate > 0 && props.gameStartDate > Date.now()) {
-            setInterval(calculateCounter, 100);
+        clearInterval(timerId);
+        if (props.gameStartDate > Date.now()) {
+            const timer = setInterval(calculateCounter, 100);
+            setTimerId(timer);
         }
         if (!!props.game && !!props.game.players) {
             console.log("Countdown players", props.game.players);
             setPlayersCount(props.game.players.length);
         }
     }, [props]);
+
+    useEffect(() => {
+        clearInterval(timerId);
+        if (props.gameStartDate > Date.now()) {
+            const timer = setInterval(calculateCounter, 100);
+            setTimerId(timer);
+        }
+    }, [playersCount]);
 
     function calculateCounter() {
         const now = new Date().getTime();
@@ -40,7 +51,7 @@ export default function Countdown(props) {
         setCountdown(message);
     }
 
-    let message = (playersCount > 0 && WarMinPlayers - playersCount) > 0 ?
+    let message = (playersCount > 0 && playersCount < WarMinPlayers) ?
         <>
             <br />
             <div>{`${WarMinPlayers - playersCount} more players to go`}</div>

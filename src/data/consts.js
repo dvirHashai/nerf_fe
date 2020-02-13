@@ -1,1 +1,1 @@
-export const WarMinPlayers = 5;
+export const WarMinPlayers = 3;
