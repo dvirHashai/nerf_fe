@@ -36,13 +36,19 @@ export const GetGame = async (gameId) => {
 
 export const PublishGame = async (game) => {
     let result;
+    let config = {
+        headers: {
+            "api_key": "Du9Ib4kChB87FYdDLLsjY7Pg6f4UFPXU6bYIv81w",
+        }
+    }
     try {
         game.attackerGroup = game.attackerGroup.map(p => p.Item);
         game.defenderGroup = game.defenderGroup.map(p => p.Item);
         game.Judge = game.referee.Item;
         game.referee = game.referee.Item;
         console.log("log for dvir: ", JSON.stringify(game));
-        const response = await axios.post(PROXY_URL + `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame?gameId=${game.gameId}`, game);
+        // const response = await axios.post(PROXY_URL + `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame?gameId=${game.gameId}`, game);
+        const response = await axios.post( `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame/?gameId=${game.gameId}`, game,config);
         console.log("PublishGame result", response.data);
     } catch (error) {
         console.log("PublishGame failed", error);
