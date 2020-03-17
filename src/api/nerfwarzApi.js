@@ -48,7 +48,7 @@ export const PublishGame = async (game) => {
         game.referee = game.referee.Item;
         console.log("log for dvir: ", JSON.stringify(game));
         // const response = await axios.post(PROXY_URL + `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame?gameId=${game.gameId}`, game);
-        const response = await axios.post( `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame/?gameId=${game.gameId}`, game,config);
+        const response = await axios.post(PROXY_URL + `https://qh180nn8xb.execute-api.eu-central-1.amazonaws.com/dev/publishGame/?gameId=${game.gameId}`, game,config);
         console.log("PublishGame result", response.data);
     } catch (error) {
         console.log("PublishGame failed", error);
